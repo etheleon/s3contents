@@ -5,6 +5,10 @@ import gcsfs
 from s3contents.compat import FileNotFoundError
 from s3contents.ipycompat import Unicode
 from s3contents.genericfs import GenericFS, NoSuchFile
+import datetime
+
+# Folders do not have a timestamp
+DUMMY_CREATED_DATE=datetime.datetime.fromtimestamp(0)
 
 class GCSFS(GenericFS):
 
@@ -123,7 +127,10 @@ class GCSFS(GenericFS):
         path_ = self.path(path)
         info = self.fs.info(path_)
         ret = {}
-        ret["ST_MTIME"] = info["updated"]
+        try:
+            ret["ST_MTIME"] = info["updated"]
+        except KeyError as err:
+            ret["ST_MTIME"] = DUMMY_CREATED_DATE
         return ret
 
     def write(self, path, content, format):
