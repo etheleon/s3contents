@@ -127,10 +127,10 @@ class GCSFS(GenericFS):
         path_ = self.path(path)
         info = self.fs.info(path_)
         ret = {}
-        # try:
-        # ret["ST_MTIME"] = info["updated"]
-        # except KeyError as err:
-        ret["ST_MTIME"] = DUMMY_CREATED_DATE
+        try:
+            ret["ST_MTIME"] = info["updated"]
+        except KeyError as err:
+            ret["ST_MTIME"] = DUMMY_CREATED_DATE
         return ret
 
     def write(self, path, content, format):
