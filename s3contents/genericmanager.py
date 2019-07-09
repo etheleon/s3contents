@@ -135,10 +135,10 @@ class GenericContentsManager(ContentsManager, HasTraits):
         """
         model = base_model(path)
         model["type"] = "file"
-        if self.fs.isfile(path):
-            model["last_modified"] = model["created"] = self.fs.lstat(path)["ST_MTIME"]
-        else:
-            model["last_modified"] = model["created"] = DUMMY_CREATED_DATE
+        # if self.fs.isfile(path):
+        #     model["last_modified"] = model["created"] = self.fs.lstat(path)["ST_MTIME"]
+        # else:
+        model["last_modified"] = model["created"] = DUMMY_CREATED_DATE
         if content:
             try:
                 content = self.fs.read(path)
